@@ -1,0 +1,49 @@
+{
+  "name": "varize",
+  "version": "1.2.6",
+  "description": "Collection of Variable Utility",
+  "keywords": [
+    "collection",
+    "pick",
+    "diff",
+    "utility",
+    "variable",
+    "filter",
+    "compare",
+    "object",
+    "field"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist && rm tsconfig.tsbuildinfo",
+    "build": "npx tsc",
+    "test": "npx ts-node src/index.test.ts"
+  },
+  "author": "Ghafariz Ainoor Rohan <im@ghafariz.com>",
+  "repository": "ghafariz/varize",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "quoteProps": "as-needed",
+    "jsxSingleQuote": false,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "endOfLine": "lf",
+    "proseWrap": "preserve",
+    "htmlWhitespaceSensitivity": "ignore",
+    "typescript": true
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2"
+  }
+}

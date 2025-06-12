@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", // Modern JS output
+    "module": "commonjs", // Use ES module syntax
+    "lib": ["ES2020", "DOM"], // Add DOM for browser compatibility
+    "declaration": true, // Emit .d.ts files
+    "declarationMap": true, // Map declarations to source
+    "sourceMap": true, // Useful for debugging
+    "outDir": "./dist", // Output directory
+    "moduleResolution": "Node", // Node-style module resolution
+    "esModuleInterop": true, // Interop between CommonJS/ESM
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmitOnError": true, // Prevent emit if there's an error
+    "strict": true, // Enables all strict type-checking options
+
+    // These options are included by `"strict": true`, but can be listed explicitly for clarity
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+
+    "skipLibCheck": true, // Skip type-checking of node_modules
+    "resolveJsonModule": true, // Allows importing .json files
+    "isolatedModules": true // Useful for compatibility with Babel or bundlers
+  }
+}
