@@ -1,7 +1,7 @@
-import { diff } from "./diff";
-import { merge } from "./merge";
-import { obj } from "./obj";
-import { pick } from "./pick";
+import { diff } from './diff';
+import { merge } from './merge';
+import { obj } from './obj';
+import { pick } from './pick';
 
 export { diff, obj, merge, pick };
 

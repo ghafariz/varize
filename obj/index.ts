@@ -22,6 +22,8 @@ type NestedValue<T, P extends string> = P extends `${infer K}.${infer Rest}`
 
 type ValidRecordKey<T> = T extends string | number | symbol ? T : never;
 
+type KeyFunc<T> = (val: T) => string | number;
+
 const getNestedValue = <T, K extends NestedKey<T>>(
   obj: T,
   key: K,
@@ -49,6 +51,8 @@ export function obj<T, K extends NestedKey<T>>(
   key: K,
 ): Record<ValidRecordKey<NestedValue<T, K>>, T>;
 
+export function obj<T, K extends KeyFunc<T>>(array: T[], key: K): Record<ReturnType<K>, T>;
+
 export function obj<T, K extends NestedKey<T>, F extends (value: T) => unknown>(
   array: T[],
   key: K,
@@ -58,6 +62,15 @@ export function obj<T, K extends NestedKey<T>, F extends (value: T) => unknown>(
   },
 ): Record<ValidRecordKey<NestedValue<T, K>>, ReturnType<F>>;
 
+export function obj<T, K extends KeyFunc<T>, F extends (value: T) => unknown>(
+  array: T[],
+  key: K,
+  option: {
+    formatter?: undefined;
+    grouping?: false | undefined;
+  },
+): Record<ReturnType<K>, ReturnType<F>>;
+
 export function obj<T, K extends NestedKey<T>, F extends (value: T) => unknown>(
   array: T[],
   key: K,
@@ -66,6 +79,15 @@ export function obj<T, K extends NestedKey<T>, F extends (value: T) => unknown>(
     grouping?: false | undefined;
   },
 ): Record<ValidRecordKey<NestedValue<T, K>>, ReturnType<F>>;
+
+export function obj<T, K extends KeyFunc<T>, F extends (value: T) => unknown>(
+  array: T[],
+  key: K,
+  option: {
+    formatter: F;
+    grouping?: false | undefined;
+  },
+): Record<ReturnType<K>, ReturnType<F>>;
 
 export function obj<T, K extends NestedKey<T>>(
   array: T[],
@@ -76,6 +98,15 @@ export function obj<T, K extends NestedKey<T>>(
   },
 ): Record<ValidRecordKey<NestedValue<T, K>>, Array<T>>;
 
+export function obj<T, K extends KeyFunc<T>>(
+  array: T[],
+  key: K,
+  option: {
+    formatter?: undefined;
+    grouping: true;
+  },
+): Record<ReturnType<K>, Array<T>>;
+
 export function obj<T, K extends NestedKey<T>, F extends (value: T) => unknown>(
   array: T[],
   key: K,
@@ -85,16 +116,26 @@ export function obj<T, K extends NestedKey<T>, F extends (value: T) => unknown>(
   },
 ): Record<ValidRecordKey<NestedValue<T, K>>, Array<ReturnType<F>>>;
 
+export function obj<T, K extends KeyFunc<T>, F extends (value: T) => unknown>(
+  array: T[],
+  key: K,
+  option: {
+    formatter: F;
+    grouping: true;
+  },
+): Record<ReturnType<K>, Array<ReturnType<F>>>;
+
 export function obj<
   T,
-  K extends NestedKey<T>,
+  K extends NestedKey<T> | KeyFunc<T>,
   F extends (value: T) => unknown,
   R extends T | ReturnType<F>,
 >(array: T[], key: K, option?: { formatter?: F; grouping?: boolean }) {
-  const record: Record<string, R | Array<R>> = {};
+  const record: Record<string | number, R | Array<R>> = {};
 
   array.forEach((item) => {
-    const thisKey = getNestedValue(item, key as NestedKey<T>);
+    const thisKey =
+      typeof key === 'function' ? key(item) : getNestedValue(item, key as NestedKey<T>);
     const val = (option?.formatter !== undefined ? option.formatter(item) : item) as R | Array<R>;
     if (option?.grouping)
       record[thisKey as string] = [...((record[thisKey as string] ?? []) as Array<R>), val] as
@@ -106,5 +147,5 @@ export function obj<
         : { ...(record[thisKey as string] ?? {}), ...val };
   });
 
-  return record as Record<ValidRecordKey<NestedValue<T, K>>, R | Array<R>>;
+  return record;
 }
